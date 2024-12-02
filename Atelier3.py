@@ -194,19 +194,19 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.datasets import load_boston
+from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 
 # Configuration du style
-plt.style.use('seaborn-v0_8')  # ou simplement supprimer cette ligne
+plt.style.use('seaborn-v0_8')
 
 # 1. Chargement et préparation des données
-boston = load_boston()
-X = pd.DataFrame(boston.data, columns=boston.feature_names)
-y = boston.target
+california = fetch_california_housing()
+X = pd.DataFrame(california.data, columns=california.feature_names)
+y = california.target
 
 # 2. Normalisation des features
 scaler = StandardScaler()
@@ -239,9 +239,9 @@ print(f"R²: {r2:.2f}")
 plt.figure(figsize=(10, 6))
 plt.scatter(y_test, y_pred, alpha=0.5)
 plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
-plt.xlabel('Prix réel')
-plt.ylabel('Prix prédit')
-plt.title('Prédictions vs Réalité')
+plt.xlabel('Prix réel (100k$)')
+plt.ylabel('Prix prédit (100k$)')
+plt.title('Prédictions vs Réalité - Prix des maisons en Californie')
 plt.tight_layout()
 plt.show()
 
@@ -250,13 +250,13 @@ errors = y_test - y_pred
 plt.figure(figsize=(10, 6))
 sns.histplot(errors, kde=True)
 plt.title('Distribution des erreurs de prédiction')
-plt.xlabel('Erreur')
+plt.xlabel('Erreur (100k$)')
 plt.ylabel('Fréquence')
 plt.show()
 
 # 7.3 Importance des features
 feature_importance = pd.DataFrame({
-    'Feature': boston.feature_names,
+    'Feature': california.feature_names,
     'Coefficient': model.coef_
 })
 feature_importance['Abs_Coefficient'] = abs(feature_importance['Coefficient'])
@@ -266,3 +266,12 @@ plt.figure(figsize=(12, 6))
 sns.barplot(x='Abs_Coefficient', y='Feature', data=feature_importance)
 plt.title('Importance des caractéristiques')
 plt.show()
+
+# 8. Description des features
+print("\nDescription des features:")
+for idx, feature in enumerate(california.feature_names):
+    print(f"{feature}: {california.feature_names[idx]}")
+    
+# 9. Statistiques descriptives
+print("\nStatistiques descriptives:")
+print(pd.DataFrame(X, columns=california.feature_names).describe())
