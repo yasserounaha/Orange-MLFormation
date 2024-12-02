@@ -200,6 +200,9 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 
+# Configuration du style
+plt.style.use('seaborn-v0_8')  # ou simplement supprimer cette ligne
+
 # 1. Chargement et préparation des données
 boston = load_boston()
 X = pd.DataFrame(boston.data, columns=boston.feature_names)
@@ -232,7 +235,6 @@ print(f"MAE: {mae:.2f}")
 print(f"R²: {r2:.2f}")
 
 # 7. Visualisations
-
 # 7.1 Prédictions vs Réalité
 plt.figure(figsize=(10, 6))
 plt.scatter(y_test, y_pred, alpha=0.5)
@@ -264,35 +266,3 @@ plt.figure(figsize=(12, 6))
 sns.barplot(x='Abs_Coefficient', y='Feature', data=feature_importance)
 plt.title('Importance des caractéristiques')
 plt.show()
-
-# 8. Analyse détaillée des résidus
-plt.figure(figsize=(10, 6))
-plt.scatter(y_pred, errors, alpha=0.5)
-plt.xlabel('Prédictions')
-plt.ylabel('Résidus')
-plt.axhline(y=0, color='r', linestyle='--')
-plt.title('Analyse des résidus')
-plt.show()
-
-# 9. Analyse des performances par plage de prix
-df_results = pd.DataFrame({
-    'Prix_reel': y_test,
-    'Prix_predit': y_pred,
-    'Erreur_absolue': abs(y_test - y_pred)
-})
-
-price_ranges = pd.qcut(df_results['Prix_reel'], q=5)
-performance_by_range = df_results.groupby(price_ranges)['Erreur_absolue'].agg(['mean', 'std'])
-print("\nPerformance par plage de prix:")
-print(performance_by_range)
-
-# 10. Prédictions détaillées
-print("\nExemples de prédictions détaillées:")
-sample_size = 5
-sample_indices = np.random.choice(len(y_test), sample_size, replace=False)
-
-for idx in sample_indices:
-    print(f"\nÉchantillon {idx}:")
-    print(f"Prix réel: {y_test[idx]:.2f}")
-    print(f"Prix prédit: {y_pred[idx]:.2f}")
-    print(f"Erreur absolue: {abs(y_test[idx] - y_pred[idx]):.2f}")
