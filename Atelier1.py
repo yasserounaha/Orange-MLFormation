@@ -29,3 +29,28 @@ plt.xlabel("Longueur des sépales")
 plt.ylabel("Largeur des sépales")
 plt.title("Relation entre longueur et largeur des sépales")
 plt.show()
+print("------------------------------------------------")
+
+
+plt.scatter(df["sepal length (cm)"], df["sepal width (cm)"], c=iris.target, cmap='viridis')
+plt.xlabel("Longueur des sépales")
+plt.ylabel("Largeur des sépales")
+plt.title("Séparation des espèces dans Iris")
+plt.show()
+print("------------------------------------------------")
+def calculer_moyenne(liste):
+    return sum(liste) / len(liste)
+print("Moyenne des longueurs :", calculer_moyenne(longueurs_sépales))
+print("------------------------------------------------")
+def standardiser(valeurs):
+ moyenne = sum(valeurs) / len(valeurs)
+ ecart_type = (sum([(x - moyenne)**2 for x in valeurs]) / len(valeurs))**0.5
+ return [(x - moyenne) / ecart_type for x in valeurs]
+print("Longueurs standardisées :", standardiser(longueurs_sépales))
+print("------------------------------------------------")
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, random_state=42)
+model = LogisticRegression(max_iter=200)
+model.fit(X_train, y_train)
+print("Précision :", model.score(X_test, y_test))
