@@ -115,7 +115,7 @@ for x in new_X:
 
 # Affichage avec intervalles de confiance
 plt.figure(figsize=(12, 6))
-plt.scatter(X, Y, color='blue', label='Données d'entraînement')
+plt.scatter(X, Y, color='blue', label='Données dentraînement')
 plt.plot(X_line, Y_line, color='red', label='Régression')
 plt.scatter(new_X, predictions, color='green', label='Prédictions')
 
